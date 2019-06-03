@@ -18,6 +18,7 @@ public class UltimateTicTacToe extends JPanel{
         height = h;
         setSize(w,h);
 
+        //set all numbers to 0;
         for (int i = 0; i < board.length; i++){
             for (int j = 0; j < board[0].length; j++) {
                 for (int k = 0; k < board[0][0].length; k++) {
@@ -26,9 +27,10 @@ public class UltimateTicTacToe extends JPanel{
             }
         }
 
+        //set all usable numbers that work to 1
         for (int i = 0; i < board[0].length; i++) {
             for (int j = 0; j < board[0][0].length; j++) {
-                board[0][i][j] = 2;
+                board[0][i][j] = 1;
             }
         }
 
@@ -52,8 +54,10 @@ public class UltimateTicTacToe extends JPanel{
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-
+                int y = mouseEvent.getY();
+                int x = mouseEvent.getX();
             }
+
         });
 
     }
@@ -64,7 +68,7 @@ public class UltimateTicTacToe extends JPanel{
         drawLines(g2);
     }
 
-    protected void drawLines (Graphics2D g2){
+    public void drawLines (Graphics2D g2){
 
         for (int i = width/9; i < width; i+=width/9) {
             g2.drawLine(0,i,width,i);
@@ -79,4 +83,37 @@ public class UltimateTicTacToe extends JPanel{
         }
 
     }
+    public void drawX (Graphics2D g2, int z, int x, int y){
+        int positionX=(x+z%3*3)*width/9+2;
+        int positionY=(y+z/3*3)*height/9+2;
+        g2.drawLine(positionX, positionY, positionX+width/9-4, positionY+width/9-4);
+        g2.drawLine(positionX, positionY+width/9-4, positionX+width/9-4, positionY);
+
+    }
+    public void drawO (Graphics2D g2, int z, int x, int y){
+        int positionX=(x+z%3*3)*width/9+2;
+        int positionY=(y+z/3*3)*height/9+2;
+        g2.drawOval(positionX, positionY, width/9-4,width/9-4);
+
+    }
+    public void drawXandO (Graphics2D g2){
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                for (int k = 0; k < board[0][0].length; k++) {
+
+                    if (board[i][j][k]==2){
+                        drawX(g2,i,j,k);
+                    }
+                    if (board[i][j][k]==3){
+                        drawO(g2,i,j,k);
+                    }
+
+                }
+            }
+        }
+
+
+    }
+
 }
