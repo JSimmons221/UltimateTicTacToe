@@ -54,8 +54,11 @@ public class UltimateTicTacToe extends JPanel{
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                int y = mouseEvent.getY();
-                int x = mouseEvent.getX();
+                int y = mouseEvent.getY()/(width/9)%3;
+                int x = mouseEvent.getX()/(width/9)%3;
+                int z = mouseEvent.getX()/(width/3)+mouseEvent.getY()/(width/3)*3;
+                int z2 = x+y*3;
+                playerTurn(z,x,y,z2);
             }
 
         });
@@ -66,6 +69,7 @@ public class UltimateTicTacToe extends JPanel{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         drawLines(g2);
+        drawXandO(g2);
     }
 
     public void drawLines (Graphics2D g2){
@@ -113,6 +117,21 @@ public class UltimateTicTacToe extends JPanel{
             }
         }
 
+    }
+
+    public void playerTurn (int z, int x, int y, int z2){
+
+        if (board[z][x][y]==1){
+            if (playerTurn%2==0){
+                board[z][x][y]=2;
+                playerTurn++;
+            }
+            else{
+                board[z][x][y]=3;
+                playerTurn++;
+            }
+        }
+        repaint();
 
     }
 
