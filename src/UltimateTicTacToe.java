@@ -73,6 +73,7 @@ public class UltimateTicTacToe extends JPanel{
         drawBoxes(g2);
         drawLines(g2);
         drawXandO(g2);
+        drawBigXandO(g2);
     }
 
     private void drawLines (Graphics2D g2){
@@ -91,20 +92,20 @@ public class UltimateTicTacToe extends JPanel{
 
     }
     private void drawX (Graphics2D g2, int z, int x, int y){
-        int positionX=(x+z%3*3)*width/9+2;
-        int positionY=(y+z/3*3)*height/9+2;
-        g2.setColor(Color.blue);
-        g2.drawLine(positionX, positionY, positionX+width/9-4, positionY+width/9-4);
-        g2.drawLine(positionX, positionY+width/9-4, positionX+width/9-4, positionY);
-        g2.setColor(Color.black);
+        int positionX=(x+z%3*3)*width/9+8;
+        int positionY=(y+z/3*3)*height/9+8;
+        g2.setStroke(new BasicStroke(10));
+        g2.drawLine(positionX, positionY, positionX+width/9-16, positionY+width/9-16);
+        g2.drawLine(positionX, positionY+width/9-16, positionX+width/9-16, positionY);
+        g2.setStroke(new BasicStroke(1));
 
     }
     private void drawO (Graphics2D g2, int z, int x, int y){
-        int positionX=(x+z%3*3)*width/9+2;
-        int positionY=(y+z/3*3)*height/9+2;
-        g2.setColor(Color.red);
-        g2.drawOval(positionX, positionY, width/9-4,width/9-4);
-        g2.setColor(Color.black);
+        int positionX=(x+z%3*3)*width/9+8;
+        int positionY=(y+z/3*3)*height/9+8;
+        g2.setStroke(new BasicStroke(10));
+        g2.drawOval(positionX, positionY, width/9-16,width/9-16);
+        g2.setStroke(new BasicStroke(1));
 
     }
     private void drawXandO (Graphics2D g2){
@@ -141,8 +142,36 @@ public class UltimateTicTacToe extends JPanel{
             }
         }
     }
+    private void drawBigX (Graphics2D g2, int x, int y){
+        int positionX=x*width/3+5;
+        int positionY=y*width/3+5;
+        g2.setStroke(new BasicStroke(5));
+        g2.setColor(new Color(0,0,205));
+        g2.drawLine(positionX, positionY, positionX+width/3-10, positionY+width/3-10);
+        g2.drawLine(positionX, positionY+width/3-10, positionX+width/3-10, positionY);
+        g2.setColor(Color.black);
+        g2.setStroke(new BasicStroke(1));
+    }
+    private void drawBigO (Graphics2D g2, int x, int y){
+        int positionX=x*width/3+6;
+        int positionY=y*width/3+6;
+        g2.setStroke(new BasicStroke(5));
+        g2.setColor(new Color (220,20,60));
+        g2.drawOval(positionX, positionY, width/3-12, width/3-12);
+        g2.setColor(Color.black);
+        g2.setStroke(new BasicStroke(1));
+    }
     private void drawBigXandO (Graphics2D g2){
-
+        for (int i = 0; i < boardB.length; i++) {
+            for (int j = 0; j < boardB[0].length; j++) {
+                if (boardB[i][j]==1){
+                    drawBigX(g2,i,j);
+                }
+                if (boardB[i][j]==2){
+                    drawBigO(g2,i,j);
+                }
+            }
+        }
     }
 
     private void playerTurn (int z, int x, int y, int z2){
