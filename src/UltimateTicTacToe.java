@@ -10,14 +10,14 @@ public class UltimateTicTacToe extends JPanel{
     private int[][] boardB = new int[3][3];
     private int playerTurn=0;
     private int width, height;
-    private boolean findGoodName;                   //FIND A GOOD NAME FOR THIS
+    private boolean unlockAll;                   //FIND A GOOD NAME FOR THIS
 
     public UltimateTicTacToe(int w, int h){
 
         width = w;
         height = h;
         setSize(w,h);
-        findGoodName=false;
+        unlockAll=false;
 
         //set all numbers to 0;
         for (int i = 0; i < board.length; i++){
@@ -59,9 +59,10 @@ public class UltimateTicTacToe extends JPanel{
                 int x = mouseEvent.getX()/(width/9)%3;
                 int z = mouseEvent.getX()/(width/3)+mouseEvent.getY()/(width/3)*3;
                 int z2 = x+y*3;
-                playerTurn(z,x,y,z2);
+                if (board[z][x][y]==1){
+                    playerTurn(z,x,y,z2);
+                }
             }
-
         });
 
     }
@@ -92,14 +93,18 @@ public class UltimateTicTacToe extends JPanel{
     private void drawX (Graphics2D g2, int z, int x, int y){
         int positionX=(x+z%3*3)*width/9+2;
         int positionY=(y+z/3*3)*height/9+2;
+        g2.setColor(Color.blue);
         g2.drawLine(positionX, positionY, positionX+width/9-4, positionY+width/9-4);
         g2.drawLine(positionX, positionY+width/9-4, positionX+width/9-4, positionY);
+        g2.setColor(Color.black);
 
     }
     private void drawO (Graphics2D g2, int z, int x, int y){
         int positionX=(x+z%3*3)*width/9+2;
         int positionY=(y+z/3*3)*height/9+2;
+        g2.setColor(Color.red);
         g2.drawOval(positionX, positionY, width/9-4,width/9-4);
+        g2.setColor(Color.black);
 
     }
     private void drawXandO (Graphics2D g2){
@@ -136,6 +141,9 @@ public class UltimateTicTacToe extends JPanel{
             }
         }
     }
+    private void drawBigXandO (Graphics2D g2){
+
+    }
 
     private void playerTurn (int z, int x, int y, int z2){
 
@@ -150,12 +158,192 @@ public class UltimateTicTacToe extends JPanel{
             }
         }
 
-        //TODO Add winning a box here
+        int counterX = 0;
+        int counterY = 0;
+        for (int i = 0; i < board[0].length; i++) {
+            for (int j = 0; j < board[0][0].length; j++) {
+                if (board[z][i][j]==2){
+                    counterY++;
+                }
+                if (board[z][i][j]==3){
+                    counterY--;
+                }
+                if (board[z][j][i]==2){
+                    counterX++;
+                }
+                if (board[z][j][i]==3){
+                    counterX--;
+                }
+            }
+            if (counterX==3 || counterY==3){
+                boardB[z%3][z/3]=1;
+                for (int j = 0; j < board[0].length; j++) {
+                    for (int k = 0; k < board[0][0].length; k++) {
+                        if (board[z][j][k]==1){
+                            board[z][j][k]=4;
+                        }
+                    }
+                }
+            }
+            else if (counterX==-3 || counterY==-3){
+                boardB[z%3][z/3]=2;
+                for (int j = 0; j < board[0].length; j++) {
+                    for (int k = 0; k < board[0][0].length; k++) {
+                        if (board[z][j][k]==1){
+                            board[z][j][k]=4;
+                        }
+                    }
+                }
+            }
+            counterX=0;
+            counterY=0;
+        }
+        
+        int counterD1 = 0;
+        int counterD2 = 0;
+        for (int i = 0; i < board[0].length; i++) {
+            if (board[z][i][i]==2){
+                counterD1++;
+            }
+            if (board[z][i][2-i]==2){
+                counterD2++;
+            }
+            if (board[z][i][i]==3){
+                counterD1--;
+            }
+            if (board[z][i][2-i]==3){
+                counterD2--;
+            }
+        }
+        if (counterD1==3 || counterD2==3){
+            boardB[z%3][z/3]=1;
+            for (int j = 0; j < board[0].length; j++) {
+                for (int k = 0; k < board[0][0].length; k++) {
+                    if (board[z][j][k]==1){
+                        board[z][j][k]=4;
+                    }
+                }
+            }
+        }
+        if (counterD1==-3 || counterD2==-3){
+            boardB[z%3][z/3]=2;
+            for (int j = 0; j < board[0].length; j++) {
+                for (int k = 0; k < board[0][0].length; k++) {
+                    if (board[z][j][k]==1){
+                        board[z][j][k]=4;
+                    }
+                }
+            }
+        }
 
-        //TODO Add winning the entire board here
+        int counterBX = 0;
+        int counterBY = 0;
+        for (int i = 0; i < boardB.length; i++) {
+            for (int j = 0; j < boardB[0].length; j++) {
+                if (boardB[i][j]==1){
+                    counterBY++;
+                }
+                if (boardB[i][j]==2){
+                    counterBY--;
+                }
+                if (boardB[j][i]==1){
+                    counterBX++;
+                }
+                if (boardB[j][i]==2){
+                    counterBX--;
+                }
+            }
+            if (counterBX==3 || counterBY==3){
+                for (int j = 0; j < board.length; j++) {
+                    for (int k = 0; k < board[0].length; k++) {
+                        for (int l = 0; l < board[0][0].length; l++) {
+                            if (board[j][k][l]==0 || board[j][k][l]==1){
+                                board[j][k][l]=4;
+                            }
+                        }
+                    }
+                }
+                for (int j = 0; j < boardB.length; j++) {
+                    if (boardB[i][j]==0){
+                        boardB[i][j]=3;
+                    }
+                }
+            }
+            if (counterBX==-3 || counterBY==-3){
+                for (int j = 0; j < board.length; j++) {
+                    for (int k = 0; k < board[0].length; k++) {
+                        for (int l = 0; l < board[0][0].length; l++) {
+                            if (board[j][k][l]==0 || board[j][k][l]==1){
+                                board[j][k][l]=4;
+                            }
+                        }
+                    }
+                }
+                for (int j = 0; j < boardB.length; j++) {
+                    if (boardB[i][j]==0){
+                        boardB[i][j]=3;
+                    }
+                }
+            }
+            counterBX=0;
+            counterBY=0;
+        }
 
-        if (findGoodName){
-            findGoodName=false;
+        int counterBD1 = 0;
+        int counterBD2 = 0;
+        for (int i = 0; i < boardB.length; i++) {
+            if (boardB[i][i]==1){
+                counterBD1++;
+            }
+            if (boardB[i][i]==2){
+                counterBD1--;
+            }
+            if (boardB[i][2-i]==1){
+                counterBD2++;
+            }
+            if (boardB[i][2-i]==2){
+                counterBD2--;
+            }
+        }
+        if (counterBD1==3 || counterBD2==3){
+            for (int j = 0; j < board.length; j++) {
+                for (int k = 0; k < board[0].length; k++) {
+                    for (int l = 0; l < board[0][0].length; l++) {
+                        if (board[j][k][l]==0 || board[j][k][l]==1){
+                            board[j][k][l]=4;
+                        }
+                    }
+                }
+            }
+            for (int j = 0; j < boardB.length; j++) {
+                for (int k = 0; k < boardB[0].length; k++) {
+                    if (boardB[j][k]==0){
+                        boardB[j][k]=3;
+                    }
+                }
+            }
+        }
+        if (counterBD1==-3 || counterBD2==-3){
+            for (int j = 0; j < board.length; j++) {
+                for (int k = 0; k < board[0].length; k++) {
+                    for (int l = 0; l < board[0][0].length; l++) {
+                        if (board[j][k][l]==0 || board[j][k][l]==1){
+                            board[j][k][l]=4;
+                        }
+                    }
+                }
+            }
+            for (int j = 0; j < boardB.length; j++) {
+                for (int k = 0; k < boardB[0].length; k++) {
+                    if (boardB[j][k]==0){
+                        boardB[j][k]=3;
+                    }
+                }
+            }
+        }
+
+        if (unlockAll){
+            unlockAll=false;
             for (int i = 0; i < board.length; i++) {
                 if (i!=z){
                     for (int j = 0; j < board[0].length; j++) {
@@ -182,12 +370,12 @@ public class UltimateTicTacToe extends JPanel{
             }
         }
         
-        if (counterZ==0){
+        if (counterZ==0 && boardB[z%3][z/3]==0){
             boardB[z%3][z/3]=3;
         }
         
         if (boardB[z2%3][z2/3]!=0){
-            findGoodName=true;
+            unlockAll=true;
             for (int i = 0; i < board.length; i++) {
                 for (int j = 0; j < board[0].length; j++) {
                     for (int k = 0; k < board[0][0].length; k++) {
