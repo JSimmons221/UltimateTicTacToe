@@ -4,8 +4,8 @@ import java.awt.*;
 public class Main {
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Tic Tac Toe - Hopps");
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        JFrame frame = new JFrame("Ultimate Tic Tac Toe - Simmons");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         int width = 720;
         int height = 720;
         frame.setPreferredSize(new Dimension(width, height + 24));

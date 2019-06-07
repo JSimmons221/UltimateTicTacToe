@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -10,7 +11,7 @@ public class UltimateTicTacToe extends JPanel{
     private int[][] boardB = new int[3][3];
     private int playerTurn=0;
     private int width, height;
-    private boolean unlockAll;                   //FIND A GOOD NAME FOR THIS
+    private boolean unlockAll;
 
     public UltimateTicTacToe(int w, int h){
 
@@ -64,6 +65,24 @@ public class UltimateTicTacToe extends JPanel{
                 }
             }
         });
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent keyEvent) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                if (keyEvent.getKeyCode()==KeyEvent.VK_R){
+                    reset();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent keyEvent) {
+
+            }
+        });
+
 
     }
 
@@ -418,5 +437,33 @@ public class UltimateTicTacToe extends JPanel{
         repaint();
 
     }
+    private void reset (){
+
+        unlockAll=false;
+        for (int i = 0; i < board.length; i++){
+            for (int j = 0; j < board[0].length; j++) {
+                for (int k = 0; k < board[0][0].length; k++) {
+                    board [i][j][k] = 0;
+                }
+            }
+        }
+
+        //set all usable numbers that work to 1
+        for (int i = 0; i < board[0].length; i++) {
+            for (int j = 0; j < board[0][0].length; j++) {
+                board[0][i][j] = 1;
+            }
+        }
+        for (int i = 0; i < boardB.length; i++) {
+            for (int j = 0; j < boardB[0].length; j++) {
+                boardB[i][j] = 0;
+            }
+        }
+
+        repaint();
+
+    }
+
+
 
 }
