@@ -12,6 +12,7 @@ public class UltimateTicTacToe extends JPanel{
     private int playerTurn=0;
     private int width, height;
     private boolean unlockAll;
+    private boolean instructions;
 
     public UltimateTicTacToe(int w, int h){
 
@@ -19,6 +20,7 @@ public class UltimateTicTacToe extends JPanel{
         height = h;
         setSize(w,h);
         unlockAll=false;
+        instructions=true;
 
         //set all numbers to 0;
         for (int i = 0; i < board.length; i++){
@@ -26,13 +28,6 @@ public class UltimateTicTacToe extends JPanel{
                 for (int k = 0; k < board[0][0].length; k++) {
                     board [i][j][k] = 0;
                 }
-            }
-        }
-
-        //set all usable numbers that work to 1
-        for (int i = 0; i < board[0].length; i++) {
-            for (int j = 0; j < board[0][0].length; j++) {
-                board[0][i][j] = 1;
             }
         }
 
@@ -75,6 +70,18 @@ public class UltimateTicTacToe extends JPanel{
                 if (keyEvent.getKeyCode()==KeyEvent.VK_R){
                     reset();
                 }
+                if (keyEvent.getKeyCode()==KeyEvent.VK_SPACE){
+                    if (instructions){
+                        instructions=!instructions;
+                        //set all usable numbers that work to 1
+                        for (int i = 0; i < board[0].length; i++) {
+                            for (int j = 0; j < board[0][0].length; j++) {
+                                board[0][i][j] = 1;
+                            }
+                        }
+                    }
+                    repaint();
+                }
             }
 
             @Override
@@ -93,6 +100,9 @@ public class UltimateTicTacToe extends JPanel{
         drawLines(g2);
         drawXandO(g2);
         drawBigXandO(g2);
+        if (instructions){
+            drawInstructions(g2);
+        }
     }
 
     private void drawLines (Graphics2D g2){
@@ -171,12 +181,27 @@ public class UltimateTicTacToe extends JPanel{
         g2.setColor(Color.black);
         g2.setStroke(new BasicStroke(1));
     }
+    private void drawBigX2 (Graphics2D g2, int x, int y){
+        g2.setStroke(new BasicStroke(5));
+        g2.setColor(new Color(0,0,205));
+        g2.drawLine(x, y, x+width/3-10, y+width/3-10);
+        g2.drawLine(x, y+width/3-10, x+width/3-10, y);
+        g2.setColor(Color.black);
+        g2.setStroke(new BasicStroke(1));
+    }
     private void drawBigO (Graphics2D g2, int x, int y){
         int positionX=x*width/3+6;
         int positionY=y*width/3+6;
         g2.setStroke(new BasicStroke(5));
         g2.setColor(new Color (220,20,60));
         g2.drawOval(positionX, positionY, width/3-12, width/3-12);
+        g2.setColor(Color.black);
+        g2.setStroke(new BasicStroke(1));
+    }
+    private void drawBigO2 (Graphics2D g2, int x, int y){
+        g2.setStroke(new BasicStroke(5));
+        g2.setColor(new Color (220,20,60));
+        g2.drawOval(x+6, y+6, width/3-12, width/3-12);
         g2.setColor(Color.black);
         g2.setStroke(new BasicStroke(1));
     }
@@ -191,6 +216,26 @@ public class UltimateTicTacToe extends JPanel{
                 }
             }
         }
+    }
+    private void drawInstructions (Graphics2D g2){
+        g2.setColor(Color.white);
+        g2.fillRect(0,0,width,width+24);
+        g2.setColor(Color.black);
+        g2.setFont(new Font("Arial",Font.BOLD,30));
+        g2.drawString("Welcome to Ultimate Tic Tac Toe",5,30);
+        g2.setFont(new Font("Arial",Font.BOLD,15));
+        g2.drawString("Coded by Jakob Simmons",5,45);
+        g2.drawString("Intructions:", 5, 90);
+        g2.drawString("-Ultimate TicTacToe is a game in which there is a TicTacToe board made of TicTacToe boards.",5,105);
+        g2.drawString("-In order to win Ultimate TicTacToe you must win three boards in a row.", 5,120);
+        g2.drawString("-You may only click in boxes that are white, gray boxes are off limits.", 5,135);
+        g2.drawString("-If you would like to restart the game press r, this will reset the board and you can play again.",5,150);
+        g2.drawString("-Final rule, HAVE FUN! This game can get very intense and isn't based on luck like normal TicTacToe.", 5, 165);
+        g2.drawString("(Press space to start)", width/2-72, width/4*3);
+        drawBigX2(g2, width/2-width/3,195);
+        drawBigO2(g2, width/2,195);
+        g2.drawString("X goes first",width/2-width/3+75,225+width/3);
+        g2.drawString("O goes Second", width/2+65,225+width/3);
     }
 
     private void playerTurn (int z, int x, int y, int z2){
